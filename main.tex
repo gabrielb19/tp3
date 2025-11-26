@@ -280,7 +280,9 @@ Finalmente, al observar las matrices de confusión \ref{fig:2_matrix_vgg}, se pu
 \FloatBarrier
 \subsubsection{Vit}
 
-\begin{table}[h]
+Al observar los F1 en \ref{tab:f1_splits_vit}, se puede observar que los splits poseen valores menores comparados con los obtenidos a través de ResNet y VGG, esto evidenciado tanto por puntajes menores como por un promedio de $0.7889$ y una desviación estándar de $0.0869$. El rendimiento inferior tambien podría explicarse a través que en terminos de requerir datos, los transformadores como arquitectura requieren de más datos que los métodos convencionales de redes profundas.
+
+\begin{table}[H]
 \centering
 \begin{tabular}{l c}
 \hline
@@ -305,6 +307,8 @@ Split 10 & 0.6040 \\
 \label{tab:f1_splits_vit}
 \end{table}
 
+Al observar las curvas (figura \ref{fig:vit_train_val_splits}), se repite el comportamiento previamente observado de ViT que es el método que tiene una pendiente decreciente más consistente y suave comparado con ResNet y ViT, pero en las curvas de validación se ve que entre modelos, hay cierto rango de dispersión.
+
 \begin{figure}[H]
     \centering
 
@@ -324,6 +328,15 @@ Split 10 & 0.6040 \\
 
     \caption{Resultados de entrenamiento y pérdida del modelo ViT sobre el conjunto de datos de cataratas.}
     \label{fig:vit_train_val_splits}
+\end{figure}
+
+Al analizar las matrices de confusión (figura \ref{fig:2_matrix_vit}), se repiten los comportamientos previamente descritos de problemas en clasificación, pero ahora también sucede con la clase normal, por lo que en general resulta en una peor clasificación.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{imgs/2_matrix_vit.png}
+    \caption{Matriz de confusión para las particiones de ViT}
+    \label{fig:2_matrix_vit}
 \end{figure}
 
 \section{Estimadores de incertidumbre}
