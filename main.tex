@@ -31,17 +31,31 @@
 \begin{document}
 
 
-\section{Entrenamiento de ResNet, VGG16 y ViT}
-
-
+\section{Entrenamiento base de ResNet, VGG16 y ViT}
 
 \subsection{Metodología}
+
+Como modelos a evaluar, se eligío utilizar ResNet, VGG16 y Vision Transformer (ViT) \cite{he2015deepresiduallearningimage} \cite{simonyan2015deepconvolutionalnetworkslargescale} \cite{dosovitskiy2021imageworth16x16words}. 
+
+Se procedío a cargar el conjunto de datos \textit{Cataract-seg}, el cual consiste de 299 imágenes de fondo de ojo con fines tanto de segmentación como de clasificación de grados de severidad de catarata en el ojo, siendo los niveles ninguno, bajo y alto.
+
+El conjunto de datos para el punto 1 se dividió entonces en las proporciones 80\% de los datos para el entrenamiento, 15\% de validación y, finalmente, un 5\% de test.
+
+Se procedio a programar funciones para el cargado del conjunto de datos, el entrenamiento de los módelos y la instanciación de cada uno de los modelos previamente mencionados.
+
+Después, se entrenó cada uno de los modelos durante 30 episodios, utilizando el algoritmo optimizador de \textit{Stochastic Gradient Descent}, con una tasa de aprendizaje de $0.001$ y con una función de pérdida \textit{Categorical Cross Entropy}.
+
+Una vez entrenados los modelos, se genero la métrica f1, la mátriz de confusión y las curvas de la función de perdida a lo largo de las iteraciones.
 
 \begin{lstlisting}[language=Python]
 asd
 \end{lstlisting}
 
-\subsection{Resultados}
+\subsection{Resultados y Discusión}
+
+\subsubsection{ResNet}
+
+Como se puede observar en las curvas de training loss y validation loss \ref{fig:resnet_loss}, se observa un comportamiento donde con más iteraciones se reduce el valor de la función de perdida para el conjunto de entrenamiento y validación. Además, es posible observar como entre la epoca 1 a la 15, el módelo es donde más presenta cambios, mientras que de la epoca 15 a la 30, el cambio es muy reducido, pero viendose marcado por varios picos de error en el conjunto de entrenamiento.
 
 \begin{figure}[H]
     \centering
@@ -50,12 +64,20 @@ asd
     \label{fig:resnet_loss}
 \end{figure}
 
+En cuanto a la matriz de confusión de la figura \ref{fig:resnet_confusion}, se observa un rendimiento muy alto al solo presentar un error en la clasifiación de un caso mild que fue catalogado como severe.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{imgs/1_confusion_matrix_resnet.png}
     \caption{Matriz de confusión para el conjunto de validación del modelo ResNet entrenado sobre el conjunto de datos de cataratas.}
     \label{fig:resnet_confusion}
 \end{figure}
+
+Al observar los resultados del f1 (ver tabla \ref{tab:resultados_f1}) entre los conjuntos de entrenamiento y validación, se puede observar que solo hay un leve deterioro en la métrica de f1, lo cual es esperable y demuestra que esta lograndose una adecuada generalización.
+
+\subsection{VGG16}
+
+Para VGG16, en la figura \ref{fig:vgg_loss} se puede observar en las curvas de training loss y validation loss \ref{fig:resnet_loss} repiten en cierta forma el comportamiento observado sobre ResNet, pero hay una diferencia entre los valores de perdida encontrados en el conjunto de entrenamiento y el conjunto de validación, siendo menores en el conjunto de validación, el de entrenamiento presentando los mismos picos observados previamente en ResNet.
 
 \begin{figure}[H]
     \centering
@@ -64,12 +86,20 @@ asd
     \label{fig:vgg_loss}
 \end{figure}
 
+Para la matríz de confusión de VGG16 presente en la figura \ref{fig:vgg_confusion}, no presenta ningún error de clasificación.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{imgs/1_confusion_matrix_vgg.png}
     \caption{Matriz de confusión para el conjunto de validación del modelo VGG entrenado sobre el conjunto de datos de cataratas.}
     \label{fig:vgg_confusion}
 \end{figure}
+
+Y en términos de rendimiento de la métrica f1, como se observa en la tabla \ref{tab:resultados_f1}, se obtuvo un valor de 0.9916 en el conjunto de entrenamiento y 1 en la validación, observándose que de nuevo, el modelo logró realizar una generalización adecuada, pero que la diferencia entre ResNet y VGG16 parece ser similar.
+
+\subsubsection{ViT}
+
+Con Visual Transformers, los valores de pérdida para el conjunto de entrenamiento y de validación, como se puede observar en la figura \ref{fig:vit_loss}, son los que presentan unas curvas más suaves y consistentes, ya que a diferencia de los otros modelos, no presentan picos tan marcados en el conjunto de entrenamiento.
 
 \begin{figure}[H]
     \centering
@@ -78,12 +108,16 @@ asd
     \label{fig:vit_loss}
 \end{figure}
 
+Al observar la matríz de confusión en la figura \ref{fig:vit_confusion}, se puede observar que para el conjunto de entrenamiento, el módelo no presenta ningún error de clasificación.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{imgs/1_confusion_matrix_vit.png}
     \caption{Matriz de confusión para el conjunto de validación del modelo ViT entrenado sobre el conjunto de datos de cataratas.}
     \label{fig:vit_confusion}
 \end{figure}
+
+Por último, al observar el rendimiento entre las métricas de f1 (ver tabla \ref{tab:resultados_f1}) para el conjunto de entrenamiento y el de validación, ViT es el que posee un menor puntaje F1 ($0.9874$) comparado con los otros métodos, sin embargo sigue obteniendo un F1 de $1.0$
 
 \begin{table}[h]
 \centering
