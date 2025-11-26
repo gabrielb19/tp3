@@ -136,11 +136,27 @@ ViT    & 0.9874 & 1.0000 \\
 
 \FloatBarrier
 
-\section{2}
+\section{Entrenamiento de modelos sobre 10 particiones.}
 
-\subsection{Resnet}
+\subsection{Métodología}
 
-\begin{table}[h]
+Como modelos a evaluar, se repitieron ResNet, VGG16 y Vision Transformer (ViT) \cite{he2015deepresiduallearningimage} \cite{simonyan2015deepconvolutionalnetworkslargescale} \cite{dosovitskiy2021imageworth16x16words}. 
+
+Se procedio a reutilizar tanto el conjunto de datos \textit{Cataract-seg}, como el código utilizado para cargarlo. Ahora el conjunto de datos se dividió entonces en las proporciones 70\% de los datos para el entrenamiento, 30\% de validación.
+
+Después, se entrenó cada uno de los modelos durante 10 episodios, utilizando el algoritmo optimizador de \textit{Stochastic Gradient Descent}, con una tasa de aprendizaje de $0.001$ y con una función de pérdida \textit{Categorical Cross Entropy}.
+
+Una vez entrenados los modelos sobre sus particiones correspondientes, se genero la métrica f1, la matriz de confusión y las curvas de la función de perdida a lo largo de las iteraciones.
+
+Para realizar un procedimiento más controlado, se procedio a crear una clase encapsuladora llamada \textit{SplitsExperiment}, la cual coordina la instanciación, entrenamiento y reporte del performance de los modelos sobre las distintas particiones.
+
+\subsection{Resultados y Discusión}
+
+\subsubsection{Resnet}
+
+Como se puede observar en la tabla \ref{tab:f1_resnet_splits}, inmediatamente se observa que hay un promedio más bajo que el observado en la tabla \ref{tab:resultados_f1} para ResNet, esto se atribuye a la diferencia de un 10\% de los datos tanto de entrenamiento como de evaluación, ya que en conjuntos de datos pequeños esa diferencia puede ser significativa. Aún así, se obtuvo un promedio alto de $0.9168$, con una desviación estándar $0.0244$, lo que puede sugerir que a pesar de estar trabajando sobre particiones distintas, el rendimiento es bastante consistente.
+
+\begin{table}[H]
 \centering
 \begin{tabular}{l c}
 \hline
@@ -165,7 +181,9 @@ Split 10 & 0.8892 \\
 \label{tab:f1_resnet_splits}
 \end{table}
 
-\begin{figure}[H][h]
+Las curvas de pérdida en el entrenamiento y en el conjunto de validación (figura \ref{fig:resnet_train_val_splits}), demuestra el mismo comportamiento previamente observado de un descenso de los valores de perdida con respecto aumentan las épocas, demostrando que el modelo esta aprendiendo.
+
+\begin{figure}[H]
     \centering
 
     \begin{subfigure}{0.48\linewidth}
@@ -186,6 +204,8 @@ Split 10 & 0.8892 \\
     \label{fig:resnet_train_val_splits}
 \end{figure}
 
+Al observar las matrices de confusión de los 10 modelos \ref{fig:2_matrix_resnet}, se puede observar que hay un error sistemático sobre la clasificación errónea en que donde se suelen equivocar, es que la clasificación \textit{mild} de catarata y la clase \textit{severe}, sin embargo, mayoritariamente se suele predecir la categoría correcta.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{imgs/2_matrix_resnet.png}
@@ -195,7 +215,9 @@ Split 10 & 0.8892 \\
 
 \FloatBarrier
 
-\subsection{VGG}
+\subsubsection{VGG16}
+
+Observando el rendimiento en el puntaje F1, del conjunto de validación en la tabla \ref{tab:f1_splits_modelo2}, se obtuvo un promedio F1 de $0.8898$, con una desviación estándar de $0.0434$, presentando un promedio menor que el obtenido con Resnet, con una mayor dispersión, presentándose un modelo con valores cercanos a $0.8111$.
 
 \begin{table}[h]
 \centering
@@ -222,7 +244,10 @@ Split 10 & 0.8840 \\
 \label{tab:f1_splits_modelo2}
 \end{table}
 
-\begin{figure}[H][h]
+Al observar las curvas de la función de perdida (ver figura \ref{fig:resnet_train_val_splits}), se puede observar que si bien, el modelo seguía aprendiendo a lo largo de las épocas, el entrenamiento fue un proceso de descenso algo inestable, al poderse observar picos sobre la perdida del conjunto de entrenamiento, mientras que la perdida en el conjunto de validación resulto en un decrecimiento suave.
+
+
+\begin{figure}[H]
     \centering
 
     \begin{subfigure}{0.48\linewidth}
@@ -243,6 +268,7 @@ Split 10 & 0.8840 \\
     \label{fig:resnet_train_val_splits}
 \end{figure}
 
+Finalmente, al observar las matrices de confusión \ref{fig:2_matrix_vgg}, se puede ver como se repite el error sistemático entre las clases \textit{severe} y \textit{mild} a una escala mayor, pero existen algunos clasificadores los cuales tienen un problema adicional, aunque mínimo, de confundir la clas \textit{normal} con \textit{mild} y \textit{severe}.
 
 \begin{figure}[H]
     \centering
@@ -250,8 +276,9 @@ Split 10 & 0.8840 \\
     \caption{Matriz de confusión para las particiones de VGG}
     \label{fig:2_matrix_vgg}
 \end{figure}
+
 \FloatBarrier
-\subsection{Vit}
+\subsubsection{Vit}
 
 \begin{table}[h]
 \centering
@@ -278,7 +305,7 @@ Split 10 & 0.6040 \\
 \label{tab:f1_splits_vit}
 \end{table}
 
-\begin{figure}[H][h]
+\begin{figure}[H]
     \centering
 
     \begin{subfigure}{0.48\linewidth}
@@ -297,13 +324,6 @@ Split 10 & 0.6040 \\
 
     \caption{Resultados de entrenamiento y pérdida del modelo ViT sobre el conjunto de datos de cataratas.}
     \label{fig:vit_train_val_splits}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{imgs/2_matrix_vit.png}
-    \caption{Matriz de confusión para las particiones de ViT}
-    \label{fig:2_matrix_vit}
 \end{figure}
 
 \section{Estimadores de incertidumbre}
