@@ -274,6 +274,40 @@ Split 10 & 0.6040 \\
 
 \section{Estimadores de incertidumbre}
 \subsection{Feature Densities}
+Para cada uno de los modelos, se extrajo su capa de embeddings, es decir, la que se encuentra antes de la clasificación. En el caso de los modelos \textbf{VGG} de \texttt{torchvision}, se selecciona la penúltima capa lineal del clasificador utilizando \texttt{model.classifier[5]}. Para \textbf{ResNet}, se extrae la capa de \textit{average pooling} (\texttt{model.avgpool}), que se encuentra justo antes de la capa totalmente conectada responsable de producir las clases. Finalmente, para \textit{Vision Transformer}, se utiliza la capa de normalización del \textit{encoder}.
+
+Una vez extraída la capa de embeddings, para cada uno de los modelos, se extrajeron los feature-embeddings (activaciones de la capa de embeddings) para del dataset de entrenamiento. Para cada dimensión de la capa de embeddings se creó un histograma que almacenan, distribuidos en 20 bins, las activaciones de todas las imágenes del dataset de entrenamiento. Cada histograma posee un total de 20 bins, siguiendo la metodología utilizada por \cite{rodriguez2024uncertainty}. 
+
+Dados los histogramas construidos con el conjunto de datos de entenamiento, se procede a estimar el valor de incertidumbre promedio del conjunto de datos de prueba en 4 configuraciones diferentes:
+\begin{itemize}
+    \item Limpio
+    \item Con ruido gaussiano
+    \item Con ruido salt and pepper
+    \item Con reducción de resolución al 50\%
+\end{itemize}
+
+Al analizar los resultados de la Tabla~\ref{tab:density_scores}, se observa que, para todos los modelos, el dataset limpio obtuvo la menor puntuación de incertidumbre, lo cual es esperable dado que sus muestras provienen de la misma distribución utilizada durante el entrenamiento. 
+
+Asimismo, los datasets con perturbaciones de ruido presentan las puntuaciones más altas, indicando que sus embeddings son los que más distan de las representaciones propias del dataset de entrenamiento. 
+
+Finalmente, un resultado particularmente interesante es que los embeddings del dataset perturbado mediante reducción de resolución parecen ser relativamente similares a los del dataset limpio, lo que sugiere que el modelo no percibe esta perturbación como una desviación significativa dentro del espacio de embeddings.
+
+\begin{table}[h!]
+\centering
+\caption{Promedio y desviación estándar de las estimaciones de incertidumbre de características bajo distintas perturbaciones.}
+\label{tab:density_scores}
+\begin{tabular}{lccc}
+\hline
+\textbf{Perturbación} & \textbf{VGG16} (mean $\pm$ std) & \textbf{ResNet50} (mean $\pm$ std) & \textbf{ViT-B16} (mean $\pm$ std) \\
+\hline
+Clean          & 22901.837 $\pm$ 595.894 & 282.386 $\pm$ 338.757 & 385.128 $\pm$ 92.638 \\
+Gaussian       & 24829.499 $\pm$ 824.017 & 1129.616 $\pm$ 279.197 & 719.913 $\pm$ 106.601 \\
+Salt \& Pepper & 26339.721 $\pm$ 248.555 & 1146.069 $\pm$ 224.096 & 673.119 $\pm$ 107.279 \\
+Low Resolution & 22990.558 $\pm$ 344.050 & 565.159 $\pm$ 372.658 & 606.392 $\pm$ 81.646 \\
+\hline
+\end{tabular}
+\end{table}
+
 \subsection{Distancia de Jensen-Shannon}
 \subsection{Deep Ensembles}
 \subsection{Monte-Carlo dropout}
