@@ -1,0 +1,275 @@
+\documentclass{article}
+\usepackage{xcolor}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{listings} 
+
+\lstset{
+    language=Python,
+    backgroundcolor=\color{gray!10},
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red!60!black},
+    commentstyle=\color{green!50!black}\itshape,
+    showstringspaces=false,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    captionpos=b
+}
+
+\title{tarea_3_pdi}
+\author{diegonm0207 }
+\date{November 2025}
+
+\usepackage[backend=biber,style=apa]{biblatex}
+\addbibresource{bibliography.bib}
+
+\begin{document}
+
+
+\section{Entrenamiento de ResNet, VGG16 y ViT}
+
+
+
+\subsection{Metodología}
+
+\begin{lstlisting}[language=Python]
+asd
+\end{lstlisting}
+
+\subsection{Resultados}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{imgs/1_train_loss_resnet.png}
+    \caption{Curvas del training loss y validation loss para el entrenamiento de la red ResNet sobre el conjunto de datos de cataratas.}
+    \label{fig:resnet_loss}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{imgs/1_confusion_matrix_resnet.png}
+    \caption{Matriz de confusión para el conjunto de validación del modelo ResNet entrenado sobre el conjunto de datos de cataratas.}
+    \label{fig:resnet_confusion}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{imgs/1_train_loss_vgg.png}
+    \caption{Curvas del training loss y validation loss para el entrenamiento de la red VGG sobre el conjunto de datos de cataratas.}
+    \label{fig:vgg_loss}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{imgs/1_confusion_matrix_vgg.png}
+    \caption{Matriz de confusión para el conjunto de validación del modelo VGG entrenado sobre el conjunto de datos de cataratas.}
+    \label{fig:vgg_confusion}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{imgs/1_train_loss_vit.png}
+    \caption{Curvas del training loss y validation loss para el entrenamiento de la red ViT sobre el conjunto de datos de cataratas.}
+    \label{fig:vit_loss}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{imgs/1_confusion_matrix_vit.png}
+    \caption{Matriz de confusión para el conjunto de validación del modelo ViT entrenado sobre el conjunto de datos de cataratas.}
+    \label{fig:vit_confusion}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcc}
+\hline
+\textbf{Modelo} & \textbf{F1 Train} & \textbf{F1 Validation} \\
+\hline
+ResNet & 0.9916 & 0.9774 \\
+VGG    & 0.9916 & 1.0000 \\
+ViT    & 0.9874 & 1.0000 \\
+\hline
+\end{tabular}
+\caption{Resultados de F1-score para los modelos evaluados sobre el conjunto de datos de cataratas.}
+\label{tab:resultados_f1}
+\end{table}
+
+\FloatBarrier
+
+\section{2}
+
+\subsection{Resnet}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l c}
+\hline
+\textbf{Split} & \textbf{F1-score} \\
+\hline
+Split 1  & 0.9324 \\
+Split 2  & 0.9199 \\
+Split 3  & 0.9081 \\
+Split 4  & 0.8668 \\
+Split 5  & 0.9205 \\
+Split 6  & 0.9149 \\
+Split 7  & 0.9163 \\
+Split 8  & 0.9424 \\
+Split 9  & 0.9577 \\
+Split 10 & 0.8892 \\
+\hline
+\textbf{Promedio} & \textbf{0.9168} \\
+\textbf{Desviación estándar} & \textbf{0.0244} \\
+\hline
+\end{tabular}
+\caption{Resultados de F1-score para los 10 splits del modelo resnet.}
+\label{tab:f1_resnet_splits}
+\end{table}
+
+\begin{figure}[H][h]
+    \centering
+
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/2_train_resnet.png}
+        \caption{Curvas de pérdida en el entrenamiento.}
+        \label{fig:resnet_train_splits}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/2_loss_resnet.png}
+        \caption{Curvas de pérdida en el conjunto de validación.}
+        \label{fig:resnet_val_splits}
+    \end{subfigure}
+
+    \caption{Resultados de entrenamiento y pérdida del modelo ResNet sobre el conjunto de datos de cataratas.}
+    \label{fig:resnet_train_val_splits}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{imgs/2_matrix_resnet.png}
+    \caption{Matriz de confusión para las particiones de ResNet}
+    \label{fig:2_matrix_resnet}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{VGG}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l c}
+\hline
+\textbf{Split} & \textbf{F1-score} \\
+\hline
+Split 1  & 0.8551 \\
+Split 2  & 0.8492 \\
+Split 3  & 0.9202 \\
+Split 4  & 0.9017 \\
+Split 5  & 0.9539 \\
+Split 6  & 0.8111 \\
+Split 7  & 0.8967 \\
+Split 8  & 0.8714 \\
+Split 9  & 0.9542 \\
+Split 10 & 0.8840 \\
+\hline
+\textbf{Promedio} & \textbf{0.8898} \\
+\textbf{Desviación estándar} & \textbf{0.0434} \\
+\hline
+\end{tabular}
+\caption{Resultados de F1-score para los 10 splits del modelo VGG.}
+\label{tab:f1_splits_modelo2}
+\end{table}
+
+\begin{figure}[H][h]
+    \centering
+
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/2_train_vgg.png}
+        \caption{Curvas de pérdida en el entrenamiento.}
+        \label{fig:resnet_train_splits}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/2_loss_vgg.png}
+        \caption{Curvas de pérdida en el conjunto de validación.}
+        \label{fig:resnet_val_splits}
+    \end{subfigure}
+
+    \caption{Resultados de entrenamiento y pérdida del modelo VGG sobre el conjunto de datos de cataratas.}
+    \label{fig:resnet_train_val_splits}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{imgs/2_matrix_vgg.png}
+    \caption{Matriz de confusión para las particiones de VGG}
+    \label{fig:2_matrix_vgg}
+\end{figure}
+\FloatBarrier
+\subsection{Vit}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l c}
+\hline
+\textbf{Split} & \textbf{F1-score} \\
+\hline
+Split 1  & 0.8380 \\
+Split 2  & 0.8869 \\
+Split 3  & 0.7945 \\
+Split 4  & 0.7397 \\
+Split 5  & 0.8321 \\
+Split 6  & 0.8618 \\
+Split 7  & 0.8739 \\
+Split 8  & 0.6777 \\
+Split 9  & 0.7807 \\
+Split 10 & 0.6040 \\
+\hline
+\textbf{Promedio} & \textbf{0.7889} \\
+\textbf{Desviación estándar} & \textbf{0.0869} \\
+\hline
+\end{tabular}
+\caption{Resultados de F1-score para los 10 splits del modelo ViT.}
+\label{tab:f1_splits_vit}
+\end{table}
+
+\begin{figure}[H][h]
+    \centering
+
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/2_train_vit.png}
+        \caption{Curvas de pérdida en el entrenamiento.}
+        \label{fig:vit_train_splits}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/2_loss_vit.png}
+        \caption{Curvas de pérdida en el conjunto de validación.}
+        \label{fig:vit_val_splits}
+    \end{subfigure}
+
+    \caption{Resultados de entrenamiento y pérdida del modelo ViT sobre el conjunto de datos de cataratas.}
+    \label{fig:vit_train_val_splits}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{imgs/2_matrix_vit.png}
+    \caption{Matriz de confusión para las particiones de ViT}
+    \label{fig:2_matrix_vit}
+\end{figure}
+\printbibliography
+\end{document}
